@@ -43,3 +43,16 @@ macro_rules! get_ruby {
         }
     };
 }
+
+/// Pin a Ruby value on the stack for the duration of a scope.
+///
+/// This macro returns a [`PinGuard`] which will automatically deregister the
+/// value when dropped.
+#[macro_export]
+macro_rules! pinned_value {
+    ($value:expr) => {
+        // Safety: the returned `PinGuard` holds a mutable reference to `$value`,
+        // preventing it from being moved while the guard is alive.
+        unsafe { $crate::stack_pinned::PinGuard::new_unchecked(&mut $value) }
+    };
+}
