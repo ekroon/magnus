@@ -1807,6 +1807,7 @@ mod into_value;
 pub mod method;
 pub mod module;
 mod mutex;
+pub mod stack_pinned;
 pub mod numeric;
 mod object;
 pub mod process;
@@ -1850,7 +1851,7 @@ use ::rb_sys::{
     rb_define_global_const, rb_define_global_function, rb_define_module, rb_define_variable,
     rb_errinfo, rb_eval_string_protect, rb_require_string, rb_set_errinfo, VALUE,
 };
-pub use magnus_macros::{init, wrap, DataTypeFunctions, TypedData};
+pub use magnus_macros::{init, pin_args, wrap, DataTypeFunctions, TypedData};
 
 #[cfg(any(ruby_gte_3_1, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(ruby_gte_3_1)))]
@@ -1890,6 +1891,7 @@ pub use crate::{
     try_convert::TryConvert,
     typed_data::{DataType, DataTypeFunctions, TypedData},
     value::{Fixnum, StaticSymbol, Value},
+    stack_pinned::{PinGuard, StackPinned},
 };
 use crate::{
     error::protect,

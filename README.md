@@ -476,6 +476,27 @@ the `unsafe` keyword, it is impossible to interact with Ruby's C-api without
 this, but users of Magnus should be able to do most things without needing to
 use `unsafe`.
 
+### Stack Pinning
+
+Values that implement [`StackPinned`](https://docs.rs/magnus/latest/magnus/trait.StackPinned.html)
+can be kept on the stack using the `pinned_value!` macro. The macro expects a
+mutable variable so the value's address does not change while pinned. The
+optional `#[magnus::pin_args]` attribute allows functions to opt in to pinning
+of their arguments.
+
+```rust
+use magnus::{pinned_value, Value, Ruby};
+
+#[magnus::pin_args]
+fn example(ruby: &Ruby, mut val: Value) -> usize {
+    let _pinned = pinned_value!(val);
+    val.funcall("length", ()).unwrap()
+}
+```
+
+The pinned value will be deregistered from Ruby's garbage collector when the
+returned guard is dropped.
+
 ## Compatibility
 
 Ruby versions 3.0, 3.1, 3.2, 3.3 and 3.4 are fully supported.

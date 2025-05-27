@@ -21,6 +21,7 @@ use syn::parse_macro_input;
 
 mod init;
 mod typed_data;
+mod pin_args;
 mod util;
 
 /// Mark a function as the 'init' function to be run for a library when it is
@@ -543,4 +544,10 @@ pub fn derive_typed_data(input: TokenStream) -> TokenStream {
         Err(e) => e.into_compile_error(),
     }
     .into()
+}
+
+/// Attribute macro enabling stack pinning for function arguments.
+#[proc_macro_attribute]
+pub fn pin_args(attrs: TokenStream, item: TokenStream) -> TokenStream {
+    pin_args::expand(attrs, item)
 }
