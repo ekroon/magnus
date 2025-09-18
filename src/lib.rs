@@ -1812,6 +1812,8 @@ pub mod module;
 mod mutex;
 pub mod numeric;
 mod object;
+pub mod pin_convert;
+pub mod pinned_method;
 pub mod process;
 /// Traits that commonly should be in scope.
 pub mod prelude {
